@@ -71,10 +71,10 @@ func include_paths(current_paths, new_paths [][]string) [][]string {
     return joined
 }
 
-func find_paths(graph map[string][]string, start, end string, current_path []string, smalls_visited map[string]bool, paths [][]string, small_repeated bool) [][]string {
+func find_paths(graph map[string][]string, start, end string, current_path []string, smalls_visited map[string]bool, paths int, small_repeated bool) int {
     current_path = append(current_path, start)
     if start == end {
-        return include_paths(paths, [][]string{current_path})
+        return paths + 1
     }
     for _, p := range graph[start] {
         if _, visited := smalls_visited[p]; !visited {
@@ -90,16 +90,16 @@ func find_paths(graph map[string][]string, start, end string, current_path []str
     return paths
 }
 
-func get_paths(graph map[string][]string, start, end string) [][]string {
+func get_paths(graph map[string][]string, start, end string) int {
     scv := make(map[string]bool)
     scv[start] = true
-    return find_paths(graph, start, end, []string{}, scv, [][]string{}, false)
+    return find_paths(graph, start, end, []string{}, scv, 0, false)
 }
 
 func main() {
     graph := parse_input("../inputs/input.in")
     fmt.Println(graph)
     paths := get_paths(graph, "start", "end")
-    fmt.Println(len(paths))
+    fmt.Println(paths)
 }
 
